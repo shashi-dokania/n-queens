@@ -32,80 +32,50 @@ window.findNRooksSolution = function(n) {
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
-window.countNRooksSolutions = function(n) {
+window.countNRooksSolutions = function(n, col) {
 
-  //start with empty board (all 0s)
+  col = 0;
+  var board = new Board({n: n});
+  var solutionCount = 0;
+  var rooks = 0;
+  for (var i = 0; i < board.attributes['n']; i++){
+    var row = board.get(i);
+    row[col] = 1;
+    if (board.hasAnyColConflicts() || board.hasAnyRowConflicts()){
+        row[col] = 0;
+    } else {
+      rooks++;
+      if(rooks === n){
+        solutionCount++;
+        rooks = 0;
+        countNRooksSolutions(n, col+1);
+      }
+    }
+  }
 
-  //loop n times (number of pieces, rows, and columns)
-    //check for conflicts
-    //loop n times
-      //place rook at [i][j]
-      //increment i and j
-
-  //
-  // for (var i = 0; i < n; i++){
-  //   for (var j = 0; j < n; j++){
-  //     makeBoard[i][j] = 1;
-
+  // col = 0;
+  // var board = new Board({n: n});
+  // var solutionCount = 0;
+  // var rooks = 0;
+  // for (var i = 0; i < board.attributes['n']; i++){
+  //   var row = board.get(i);
+  //   for (var k = 0; k < board.attributes['n']; k++){
+  //     row[k] = 1;
+  //     if (board.hasAnyColConflicts() || board.hasAnyRowConflicts()){
+  //       row[k] = 0;
+  //     } else {
+  //       rooks++;
+  //     }
   //   }
-  //   for (var k = 1; k < n; k++){
+  //   if (rooks === n){
+  //     solutionCount++;
+  //     console.log(board.rows());
 
   //   }
   // }
-  
-  
-  // function makeBoard(n){
-  //   var array = new Array(n);
-  //   for (var i = 0; i < n; i++){
-  //     array[i] = new Array(n);
-  //   }
-  //   for (var i = 0; i < n; i++){
-  //     for (var j = 0; j < n; j++){
-  //       array[i][j] = 0;
-  //     }
-  //   }
-  //   return array;
-  // };
 
-  // var makeBoard = makeBoard(n);
-
-
-  // function placeRooks(col){
-  //   var count = 0;
-  //   if (col >= n){
-  //     return true;
-  //   }
-  //   for (var i = 0; i < n; i++){
-  //     if (!makeBoard.hasAnyColConflicts() && !makeBoard.hasAnyRowConflicts()){
-  //         makeBoard[i][col] = 1;
-  //         if (placeRooks(col + 1)){
-  //           count++;
-  //           return true;
-  //         } else {
-  //           makeBoard[i][col] = 0;
-  //         }
-  //     }
-  //     // for (var j = 0; j < n; j++){
-  //     //   makeBoard[i][j] = 1;
-  //     //   if (board.hasAnyColConflicts()|| board.hasAnyRowConflicts()){
-  //     //     makeBoard[i][j] = 0;
-  //     //   }
-  //     //   i++;
-  //     //   j++;
-  //     }
-  //   }
-  //   return count;
-  
-
-  //var solutionCount = undefined;
-
-  //var makeBoard = makeBoard(n);
-
-
-  //board.hasAnyColConflicts
-  //board.hasAnyRowConflicts
-
-  //var solution = makeBoard; //fixme
+  //clear board, 
+  //solution count ++ when i = n && # of rooks = n;
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
